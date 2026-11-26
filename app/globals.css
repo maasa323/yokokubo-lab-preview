@@ -1,61 +1,157 @@
 @import "tailwindcss";
 
+/*
+ * デザイントークン（Figma「TOP / Desktop」39:375 から）
+ * 文字色はすべて #303030。背景は白＋グラデーション。
+ */
 @theme {
-  /* Lab Color Palette */
-  --color-cameo-pink: #E3BAC6;
-  --color-misty-rose: #FDE8E9;
-  --color-lilac: #BC9EC1;
-  --color-deep-plum: #3D1B3F;
-  --color-muted-plum: #6E4B7A;
-  --color-pale-lilac: #D4B8D8;
-  --color-sage: #7FA67F;
-  --color-warm-white: #FEFAF9;
-  --color-border-soft: #EDD8E8;
-}
+  --color-ink: #303030;
+  --color-ink-muted: #6b6b6b;
+  --color-line: rgb(48 48 48 / 0.16);
+  --color-veil: rgb(255 255 255 / 0.6);
 
-@theme inline {
-  --font-sans: var(--font-inter), var(--font-noto), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* ページの最大幅（Figmaの1440px）。これより広い画面では左右に余白が出る */
+  --container-site: 1440px;
+
+  /* 欧文の大見出し（Flourishing Technology、番号） */
+  --font-serif: var(--font-newsreader), "Times New Roman", serif;
+  /* First Viewのメッセージ・セクション見出し・番号・日付・コピーライト */
+  --font-display: var(--font-abhaya), var(--font-newsreader), serif;
+  /* 和文の本文・見出し */
+  --font-mincho: var(--font-shippori), "Hiragino Mincho ProN", "Yu Mincho", serif;
+  /* ナビ・タグ・ラベル */
+  --font-gothic: var(--font-zen), "Hiragino Sans", "Yu Gothic", sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
+  /* 固定ヘッダーの分、ページ内リンクの飛び先を下げる */
+  scroll-padding-top: 96px;
+}
+
+@media (width < 48rem) {
+  html {
+    scroll-padding-top: 72px;
+  }
 }
 
 body {
-  background-color: #FEFAF9;
-  color: #3D1B3F;
-  font-family: var(--font-inter), var(--font-noto), 'Helvetica Neue', Helvetica, sans-serif;
+  background-color: #fff;
+  color: var(--color-ink);
+  font-family: var(--font-gothic);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-@keyframes fadeUp {
+/*
+ * 背景のシンボル（components/SymbolBloom.tsx）。
+ * 回転の中心はシンボルの (535.5, 550)。
+ */
+.symbol-spin,
+.symbol-petal {
+  transform-box: view-box;
+  transform-origin: 535.5px 550px;
+}
+
+/*
+ * ひらく：中心のつぼみから、回りながら外へ。
+ * 咲き始めは少しずつ加速し、中盤は一定の速さで、最後はふわっと長く減速する。
+ */
+.symbol-bloom {
+  animation: symbol-bloom 3.4s cubic-bezier(0.6, 0, 0.12, 1) both;
+  animation-delay: calc(0.3s + var(--d, 0s));
+}
+
+/* 揺れる：ひらき終わってから、それぞれの周期で */
+.symbol-sway {
+  animation: symbol-sway var(--sway, 8s) ease-in-out infinite;
+  animation-delay: calc(3.7s + var(--d, 0s));
+}
+
+/* 回る：全体がとてもゆっくり */
+.symbol-spin {
+  animation: symbol-spin 240s linear infinite;
+}
+
+@keyframes symbol-bloom {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: rotate(-70deg) scale(0.12);
+  }
+  40% {
+    opacity: 1;
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: rotate(0deg) scale(1);
   }
 }
 
-.animate-fade-up {
-  animation: fadeUp 0.7s ease-out both;
+@keyframes symbol-sway {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(4deg) scale(1.04);
+  }
 }
 
-.animate-fade-up-1 {
-  animation: fadeUp 0.7s ease-out 0.1s both;
+@keyframes symbol-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.animate-fade-up-2 {
-  animation: fadeUp 0.7s ease-out 0.2s both;
+/*
+ * スクロールで現れる：画面に入ったら、下から少し浮かび上がるようにふわっと出す（1回だけ）。
+ * html.reveal は <head> のスクリプトで付ける。JSが動かない環境では隠さない。
+ */
+html.reveal [data-reveal] {
+  opacity: 0;
+  translate: 0 24px;
+  transition:
+    opacity 1s cubic-bezier(0.2, 0.6, 0.2, 1),
+    translate 1s cubic-bezier(0.2, 0.6, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+html.reveal [data-reveal].is-visible {
+  opacity: 1;
+  translate: none;
 }
 
-.animate-fade-up-3 {
-  animation: fadeUp 0.7s ease-out 0.3s both;
+/*
+ * よりやわらかく出す（data-reveal="soft"）。TOPのFirst View直後のメッセージで使う。
+ * ぼかしをほどきながら、ゆっくり少しだけ浮かび上がる。
+ */
+html.reveal [data-reveal="soft"] {
+  translate: 0 16px;
+  filter: blur(3px);
+  transition:
+    opacity 2s cubic-bezier(0.25, 0.1, 0.25, 1),
+    translate 2s cubic-bezier(0.25, 0.1, 0.25, 1),
+    filter 2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+html.reveal [data-reveal="soft"].is-visible {
+  filter: none;
 }
 
-.animate-fade-up-4 {
-  animation: fadeUp 0.7s ease-out 0.4s both;
+@media (prefers-reduced-motion: reduce) {
+  html.reveal [data-reveal],
+  html.reveal [data-reveal="soft"] {
+    opacity: 1;
+    translate: none;
+    filter: none;
+    transition: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .symbol-bloom,
+  .symbol-sway,
+  .symbol-spin {
+    animation: none;
+  }
 }

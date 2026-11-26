@@ -24,6 +24,10 @@ jobs:
         run: node scripts/fetch-scholar.mjs
         continue-on-error: true
       - run: npm run build
+        env:
+          # プレビュー用リポジトリだけ Variables で設定する（本番は未設定）
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.BASE_PATH }}
+          NEXT_PUBLIC_NOINDEX: ${{ vars.NOINDEX }}
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:

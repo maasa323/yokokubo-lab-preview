@@ -1,85 +1,47 @@
 import Link from "next/link";
-import { FlowerMark } from "./FloralDecor";
-
-const footerLinks = [
-  { href: "/", label: "ホーム" },
-  { href: "/about", label: "研究内容" },
-  { href: "/news", label: "ニュース" },
-  { href: "/publications", label: "業績" },
-  { href: "/members", label: "メンバー" },
-  { href: "/access", label: "アクセス・お問い合わせ" },
-];
+import { asset, navItems } from "@/lib/site";
+import TextLink, { LinkUnderline } from "./TextLink";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#3D1B3F] text-white/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* Lab info */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <FlowerMark size={28} />
-              <div>
-                <div className="text-white font-bold text-sm">横窪研究室</div>
-                <div className="text-white/60 text-xs">
-                  東京大学大学院情報学環
-                </div>
-              </div>
-            </div>
-            <p className="text-sm text-white/60 leading-relaxed">
-              人・文化・テクノロジーの交差点で、
-              <br />
-              新たな価値とインタラクションを創る。
-            </p>
-          </div>
-
-          {/* Quick links */}
-          <div>
-            <h3 className="text-white font-semibold text-sm mb-4 tracking-wide uppercase">
-              Pages
-            </h3>
-            <ul className="space-y-2">
-              {footerLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/60 hover:text-[#E3BAC6] transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact info */}
-          <div>
-            <h3 className="text-white font-semibold text-sm mb-4 tracking-wide uppercase">
-              Contact
-            </h3>
-            <address className="not-italic space-y-2 text-sm text-white/60">
-              <p>〒113-0033</p>
-              <p>東京都文京区本郷7-3-1</p>
-              <p>東京大学大学院情報学環</p>
-              <p>ダイワユビキタス学術研究館</p>
-              <p className="pt-2">
-                <span className="select-all">
-                  anna.yokokubo [at] iii.u-tokyo.ac.jp
-                </span>
-              </p>
-            </address>
-          </div>
+    <footer className="relative z-10 mx-auto flex w-full max-w-site flex-col gap-16 px-6 py-12 md:gap-[120px] md:px-16">
+      <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
+        <div className="flex flex-col gap-8">
+          <Link href="/" aria-label="横窪研究室 トップへ" className="w-fit">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={asset("/images/top/logo.svg")}
+              alt="横窪研究室 Yokokubo Lab, UTokyo"
+              width={197.72}
+              height={48}
+              className="block"
+            />
+          </Link>
+          <address className="flex flex-col gap-2 text-[14px] leading-[1.7] tracking-[0.04em] not-italic">
+            <span>東京大学大学院情報学環・学際情報学府 総合分析情報学コース</span>
+            <span>横窪研究室</span>
+            <span>〒113-0033 東京都文京区本郷7-3-1</span>
+            <span>anna.yokokubo [at] iii.u-tokyo.ac.jp</span>
+            <span className="pt-2">
+              <TextLink href="/about#access">アクセス</TextLink>
+            </span>
+          </address>
         </div>
-
-        {/* Bottom bar */}
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40">
-          <p>
-            &copy; {new Date().getFullYear()} Yokokubo-Lab., The University of Tokyo.
-            All rights reserved.
-          </p>
-          <p>Graduate School of Interdisciplinary Information Studies (GSII), UTokyo</p>
-        </div>
+        <nav aria-label="フッター">
+          <ul className="flex flex-col gap-4 text-[14px] tracking-[0.06em] whitespace-nowrap md:w-[104px] md:pt-20">
+            {navItems.map((item) => (
+              <li key={item.href}>
+                {/* ヘッダーのナビと同じく、ホバーでグラデーションの線が左から右へ走る */}
+                <Link href={item.href} className="group relative pb-1">
+                  {item.label}
+                  <LinkUnderline base={false} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
+      <p className="font-display text-[12px] tracking-[0.12em] uppercase">© Yokokubo Lab</p>
     </footer>
   );
 }
