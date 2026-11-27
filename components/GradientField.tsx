@@ -63,7 +63,7 @@ export default function GradientField({ variant }: { variant: "top" | "page" }) 
             }}
           >
             <div className="absolute inset-[-17.82%_-18.54%_-20.2%_-9.7%]">
-              <AnimatedGradient seed={c.seed} />
+              <AnimatedGradient seed={c.seed} stillOnIOS={c.seed === 0} />
             </div>
           </div>
         ))}

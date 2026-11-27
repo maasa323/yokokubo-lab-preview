@@ -36,10 +36,11 @@ export default function Header() {
       {/*
         背景は別の要素に敷く。header 自体に backdrop-filter を付けると、
         中の position: fixed（スマホのメニュー）が画面ではなく header 基準になってしまうため。
+        上は画面の外まで伸ばし、iPhoneのステータスバーの裏も同じぼかしにする。
       */}
       <div
         aria-hidden="true"
-        className={`pointer-events-none absolute inset-0 -z-10 bg-white/70 backdrop-blur-md transition-opacity duration-300 ${scrolled && !open ? "opacity-100" : "opacity-0"}`}
+        className={`pointer-events-none absolute inset-x-0 -top-[120px] bottom-0 -z-10 bg-white/70 backdrop-blur-md transition-opacity duration-300 ${scrolled && !open ? "opacity-100" : "opacity-0"}`}
       />
       {/* 中身だけ最大幅に収める（背景は画面幅いっぱい） */}
       <div className="mx-auto flex h-full w-full max-w-site items-center justify-between px-4 md:pr-12 md:pl-6">

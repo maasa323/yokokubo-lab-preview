@@ -64,7 +64,25 @@ function loadSprite(blob: Blob): Promise<HTMLCanvasElement> {
   });
 }
 
-export default function AnimatedGradient({ seed = 0 }: { seed?: number }) {
+/**
+ * iOS（iPhone・iPad）かどうか。iPadOSはMacと名乗るので、タッチ対応で見分ける。
+ * iOSでは、キャンバスと重なったシンボルのオーバーレイ（mix-blend-mode）が効かず、グレーになってしまう。
+ */
+function isIOS() {
+  return (
+    /iP(hone|ad|od)/.test(navigator.userAgent) ||
+    (navigator.userAgent.includes("Macintosh") && navigator.maxTouchPoints > 1)
+  );
+}
+
+export default function AnimatedGradient({
+  seed = 0,
+  stillOnIOS = false,
+}: {
+  seed?: number;
+  /** シンボルと重なる塊。iOSでは静止画のままにして、シンボルのオーバーレイを効かせる */
+  stillOnIOS?: boolean;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [live, setLive] = useState(false);
 
@@ -72,6 +90,7 @@ export default function AnimatedGradient({ seed = 0 }: { seed?: number }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (stillOnIOS && isIOS()) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -132,7 +151,7 @@ export default function AnimatedGradient({ seed = 0 }: { seed?: number }) {
       cancelAnimationFrame(raf);
       io.disconnect();
     };
-  }, [seed]);
+  }, [seed, stillOnIOS]);
 
   return (
     <>
