@@ -98,7 +98,7 @@ export default function ResearchPage() {
             ))}
           </div>
           <div>
-            <TextLink href="/publications">業績一覧</TextLink>
+            <TextLink href="/publications" size="lg">業績一覧</TextLink>
           </div>
         </Section>
       ))}

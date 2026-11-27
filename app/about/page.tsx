@@ -87,8 +87,8 @@ export default function AboutPage() {
           </div>
 
           <div className="flex flex-wrap gap-x-10 gap-y-6">
-            <TextLink href="/research">研究を見る</TextLink>
-            <TextLink href="/members">メンバー・募集について</TextLink>
+            <TextLink href="/research" size="lg">研究を見る</TextLink>
+            <TextLink href="/members" size="lg">メンバー・募集について</TextLink>
           </div>
         </div>
       </Section>
