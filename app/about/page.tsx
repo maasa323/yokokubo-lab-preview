@@ -3,7 +3,6 @@ import { Body, Row, Section } from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionHeading from "@/components/SectionHeading";
 import SymbolMotif from "@/components/SymbolMotif";
-import Tags from "@/components/Tags";
 import TextLink from "@/components/TextLink";
 
 export const metadata: Metadata = {
@@ -87,22 +86,9 @@ export default function AboutPage() {
             </Body>
           </div>
 
-          <div className="flex flex-col gap-10">
-            <Tags
-              gap="md"
-              display
-              items={[
-                "HCI・HAI",
-                "Slow Digital",
-                "AI+IoT",
-                "行動変容",
-                "Research through Design",
-              ]}
-            />
-            <div className="flex flex-wrap gap-x-10 gap-y-6">
-              <TextLink href="/research">研究を見る</TextLink>
-              <TextLink href="/members">メンバー・募集について</TextLink>
-            </div>
+          <div className="flex flex-wrap gap-x-10 gap-y-6">
+            <TextLink href="/research">研究を見る</TextLink>
+            <TextLink href="/members">メンバー・募集について</TextLink>
           </div>
         </div>
       </Section>
