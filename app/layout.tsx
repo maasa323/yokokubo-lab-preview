@@ -63,6 +63,8 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
+      // ページ遷移のときはスムーズスクロールを止めて、新しいページを上から表示する
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${newsreader.variable} ${abhaya.variable} ${shippori.variable} ${zen.variable}`}
     >
