@@ -26,16 +26,19 @@
 html {
   scroll-behavior: smooth;
   /* 固定ヘッダーの分、ページ内リンクの飛び先を下げる */
-  scroll-padding-top: 96px;
+  scroll-padding-top: calc(96px + env(safe-area-inset-top));
 }
 
 @media (width < 48rem) {
   html {
-    scroll-padding-top: 72px;
+    scroll-padding-top: calc(72px + env(safe-area-inset-top));
   }
 }
 
 body {
+  /* viewport-fit=cover にしたので、iPhoneの横向きで文字がノッチに隠れないようにする */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
   background-color: #fff;
   color: var(--color-ink);
   font-family: var(--font-gothic);

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   Abhaya_Libre,
   Newsreader,
@@ -40,6 +40,11 @@ const zen = Zen_Kaku_Gothic_New({
   display: "swap",
   preload: false,
 });
+
+// iPhoneのステータスバーの裏までページを描く（ヘッダーのぼかしをステータスバーにも効かせる）
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.yokokubo-lab.com"),

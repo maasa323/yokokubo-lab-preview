@@ -32,7 +32,8 @@ export default function Header() {
     pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="sticky top-0 z-30 h-[72px] md:h-[96px]">
+    // iPhoneではステータスバーの裏まで広げ、中身はステータスバーの高さ分下げる（PCでは0）
+    <header className="sticky top-0 z-30 h-[calc(72px+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] md:h-[calc(96px+env(safe-area-inset-top))]">
       {/*
         背景は別の要素に敷く。header 自体に backdrop-filter を付けると、
         中の position: fixed（スマホのメニュー）が画面ではなく header 基準になってしまうため。
@@ -96,7 +97,7 @@ export default function Header() {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="fixed inset-0 z-30 bg-white/95 px-6 pt-28 backdrop-blur-sm md:hidden"
+        className="fixed inset-0 z-30 bg-white/95 px-6 pt-[calc(7rem+env(safe-area-inset-top))] backdrop-blur-sm md:hidden"
       >
         <ul className="flex flex-col gap-8 font-mincho text-[22px] font-semibold tracking-[0.08em]">
           <li>
